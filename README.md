@@ -1,5 +1,3 @@
-Markdown
-
 ## Sobre o Projeto
 
 Este projeto foi desenvolvido com base no desafio **[Personal Blogging Platform API](https://roadmap.sh/projects/personal-blog-api)**, proposto pela plataforma de estudos **roadmap.sh**.
@@ -14,4 +12,4 @@ O objetivo do desafio é construir uma API RESTful de backend para alimentar um 
 - Exclusão de artigos via ID.
 
 ### Arquitetura
-![Arquitetura da API do Blog](<img width="1813" height="866" alt="image" src="https://github.com/user-attachments/assets/17478486-dda0-486d-a759-ba43a3bcc108" />)
+![Arquitetura da API do Blog](https://github.com/user-attachments/assets/17478486-dda0-486d-a759-ba43a3bcc108)
