@@ -1,4 +1,3 @@
-<img width="1813" height="866" alt="image" src="https://github.com/user-attachments/assets/17478486-dda0-486d-a759-ba43a3bcc108" />
 Markdown
 
 ## Sobre o Projeto
@@ -15,4 +14,4 @@ O objetivo do desafio é construir uma API RESTful de backend para alimentar um 
 - Exclusão de artigos via ID.
 
 ### Arquitetura
-![Arquitetura da API do Blog](image.png)
+![Arquitetura da API do Blog](<img width="1813" height="866" alt="image" src="https://github.com/user-attachments/assets/17478486-dda0-486d-a759-ba43a3bcc108" />)
