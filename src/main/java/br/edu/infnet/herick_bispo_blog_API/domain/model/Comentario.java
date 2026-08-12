@@ -2,7 +2,7 @@ package br.edu.infnet.herick_bispo_blog_API.domain.model;
 
 import java.time.LocalDateTime;
 
-public class Comentario {
+public class Comentario implements Identificavel {
 
     private Long id;
     private String texto;
@@ -13,8 +13,8 @@ public class Comentario {
 
     public Comentario(){}
 
-    public Comentario(String texto) {
-
+    public Comentario(Long id, String texto) {
+        this.id = id;
         this.texto = texto;
     }
 

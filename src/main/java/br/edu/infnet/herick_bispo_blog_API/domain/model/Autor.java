@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Autor extends Usuario{
 
-    private double reputacao;
+    private double reputacao = 5.0;
     private int quantidadeAvaliacoesEmArtigos = 0;
     private double somaAvaliacoesEmArtigos = 0.0;
 
@@ -14,8 +14,8 @@ public class Autor extends Usuario{
 
     public Autor(){}
 
-    public Autor(String nome, String email) {
-        super(1L, nome, email, LocalDateTime.now());
+    public Autor(Long id,String nome, String email) {
+        super(id, nome, email, LocalDateTime.now());
     }
 
 // --------------------------------------------------------------------------------------------------------------------------
@@ -32,17 +32,15 @@ public class Autor extends Usuario{
         artigo.setPublicado(true);
     }
 
-    public void excluirArtigo(Artigo artigo, boolean excluir){
-        if (excluir) {
-            artigos.remove(artigo);
-        }
-    }
+    public void avaliarReputacaoAutor(){
 
-    public void avaliarReputacaoAutor(double avaliacao){
-
-        quantidadeAvaliacoesEmArtigos ++;
-        this.somaAvaliacoesEmArtigos += avaliacao;
-        this.reputacao = this.somaAvaliacoesEmArtigos / this.quantidadeAvaliacoesEmArtigos;
+        this.quantidadeAvaliacoesEmArtigos = this.artigos.size();
+        this.somaAvaliacoesEmArtigos = this.artigos.stream()
+                .mapToDouble(Artigo::getAvaliacao)
+                .sum();
+        this.reputacao = this.quantidadeAvaliacoesEmArtigos > 0
+                ? this.somaAvaliacoesEmArtigos / this.quantidadeAvaliacoesEmArtigos
+                : 5.0;
     }
 
     public void moderarComentario(Artigo artigo, Comentario comentario, boolean aprovado) {
@@ -59,17 +57,12 @@ public class Autor extends Usuario{
         }
     }
 
-    // Será refatorado com streams para usar apenas uma lista
     private void aprovar(Artigo artigo, Comentario comentario) {
         comentario.setAprovado(true);
-        artigo.getComentariosPendentes().remove(comentario);
-        artigo.getComentarios().add(comentario);
     }
 
-    // Será refatorado com streams para usar apenas uma lista
     private void rejeitar(Artigo artigo, Comentario comentario) {
-        comentario.setAprovado(false);
-        artigo.getComentariosPendentes().remove(comentario);
+        artigo.removerComentario(comentario);
     }
 
 // -----------------------------------------------------------------------------------------------------------------------
@@ -94,9 +87,5 @@ public class Autor extends Usuario{
 
     public List<Artigo> getArtigos() {
         return artigos;
-    }
-
-    public void setArtigos(List<Artigo> artigos) {
-        this.artigos = artigos;
     }
 }

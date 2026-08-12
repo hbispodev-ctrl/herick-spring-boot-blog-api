@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Artigo {
+public class Artigo implements Identificavel{
 
     private Long id;
     private String titulo;
@@ -18,35 +18,51 @@ public class Artigo {
 
     private Autor autor;
 
-    // Será refatorado com streams para usar apenas uma lista
     private List<Comentario> comentarios = new ArrayList<Comentario>();
-    private List<Comentario> comentariosPendentes = new ArrayList<Comentario>();
 
     public Artigo(){}
 
-    public Artigo(String titulo, String conteudo) {
+    public Artigo(Long id, String titulo, String conteudo) {
+        this.id = id;
         this.titulo = titulo;
         this.conteudo = conteudo;
     }
 
 // ------------------------------------------------------------------------------------------------------------------------
-public void receberComentario(Comentario comentario) {
+    public void receberComentario(Comentario comentario) {
+        if(comentario == null){
+            throw new IllegalArgumentException("O comentário não pode ser nulo");
+        }
+        this.comentarios.add(comentario);
+        }
 
-    // Será refatorado com streams para usar apenas uma lista
-    if (comentario.isAprovado()) {
-        comentarios.add(comentario);
-    } else {
-        comentariosPendentes.add(comentario);
+    public List<Comentario> filtrarComentariosAprovados() {
+        return comentarios.stream()
+                .filter(Comentario::isAprovado)
+                .toList();
     }
-}
 
-    public void receberAvaliacao(double nota) {
+    public List<Comentario> filtrarComentariosPendentes() {
+        return comentarios.stream()
+                .filter(c -> !c.isAprovado())
+                .toList();
+    }
+
+    public void removerComentario(Comentario comentario) {
+        this.comentarios.remove(comentario);
+    }
+
+    public void receberAvaliacaoArtigo(double nota) {
+
+        calcularAvaliacaoArtigo(nota);
+        autor.avaliarReputacaoAutor();
+    }
+
+    private void calcularAvaliacaoArtigo(double nota) {
 
         this.quantidadeAvaliacoesArtigo++;
         this.somaAvaliacoesArtigo += nota;
         this.avaliacao = this.somaAvaliacoesArtigo / this.quantidadeAvaliacoesArtigo;
-
-        autor.avaliarReputacaoAutor(avaliacao);
     }
 
     public void incrementarVisualizacao(){
@@ -127,15 +143,27 @@ public void receberComentario(Comentario comentario) {
         return comentarios;
     }
 
-    public void setComentarios(List<Comentario> comentarios) {
-        this.comentarios = comentarios;
+    public double getAvaliacao() {
+        return avaliacao;
     }
 
-    public List<Comentario> getComentariosPendentes() {
-        return comentariosPendentes;
+    public void setAvaliacao(double avaliacao) {
+        this.avaliacao = avaliacao;
     }
 
-    public void setComentariosPendentes(List<Comentario> comentariosPendentes) {
-        this.comentariosPendentes = comentariosPendentes;
+    public int getQuantidadeAvaliacoesArtigo() {
+        return quantidadeAvaliacoesArtigo;
+    }
+
+    public void setQuantidadeAvaliacoesArtigo(int quantidadeAvaliacoesArtigo) {
+        this.quantidadeAvaliacoesArtigo = quantidadeAvaliacoesArtigo;
+    }
+
+    public double getSomaAvaliacoesArtigo() {
+        return somaAvaliacoesArtigo;
+    }
+
+    public void setSomaAvaliacoesArtigo(double somaAvaliacoesArtigo) {
+        this.somaAvaliacoesArtigo = somaAvaliacoesArtigo;
     }
 }

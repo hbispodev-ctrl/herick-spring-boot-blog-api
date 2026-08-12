@@ -2,7 +2,7 @@ package br.edu.infnet.herick_bispo_blog_API.domain.model;
 
 import java.time.LocalDateTime;
 
-public abstract class Usuario {
+public abstract class Usuario implements Identificavel {
 
     private Long id;
     private String nome;

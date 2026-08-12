@@ -8,28 +8,19 @@ public class Leitor extends Usuario {
 
     public Leitor(){}
 
-    public Leitor(String nome, String email) {
-        super(2L, nome, email, LocalDateTime.now());
+    public Leitor(Long id, String nome, String email) {
+        super(id, nome, email, LocalDateTime.now());
     }
 
 // -------------------------------------------------------------------------------------------------------------------------
 
-    public void comentar(Artigo artigo, String texto) {
-
-        Comentario novoComentario = new Comentario(texto);
-        novoComentario.setAutorComentario(this);
-        novoComentario.setDataHora(LocalDateTime.now());
-
-        artigo.receberComentario(novoComentario);
-    }
-
     public void avaliar(Artigo artigo, double nota) {
 
         //A nota deverá ser entre 1 e 5
-        if(nota <= 1 || nota >= 5){
+        if(nota < 1 || nota > 5){
             throw new IllegalArgumentException("A nota deve ser entre 1 e 5");
         }
-        artigo.receberAvaliacao(nota);
+        artigo.receberAvaliacaoArtigo(nota);
     }
 
     public void assinarNewsLetter(Boolean inscrever){

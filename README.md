@@ -13,3 +13,10 @@ O objetivo do desafio é construir uma API RESTful de backend para alimentar um 
 
 ### Arquitetura
 ![Arquitetura da API do Blog](https://github.com/user-attachments/assets/17478486-dda0-486d-a759-ba43a3bcc108)
+
+
+### Uso de Inteligência Artificial
+Em conformidade com as diretrizes da disciplina, ferramentas baseadas em IA foram utilizadas como suporte técnico para esclarecimento de dúvidas conceituais, depuração de código e refatoração de regras de negócio.
+
+O registro detalhado das interações e orientações de IA pode ser consultado no arquivo
+- Etapa 1: [etapa-1 Refatoração e Melhorias do Código](./etapa-1%20Refatoração%20e%20Melhorias%20do%20Código.pdf).
