@@ -1,4 +1,7 @@
-package br.edu.infnet.herick_bispo_blog_API.domain.model;
+package br.edu.infnet.herick_bispo_blog_API.domain;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,6 +19,7 @@ public class Artigo implements Identificavel{
     private int quantidadeAvaliacoesArtigo = 0;
     private double somaAvaliacoesArtigo = 0.0;
 
+    @JsonBackReference
     private Autor autor;
 
     private List<Comentario> comentarios = new ArrayList<Comentario>();

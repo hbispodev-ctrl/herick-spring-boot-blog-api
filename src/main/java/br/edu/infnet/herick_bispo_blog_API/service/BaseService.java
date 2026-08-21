@@ -1,9 +1,13 @@
-package br.edu.infnet.herick_bispo_blog_API.domain.service;
+package br.edu.infnet.herick_bispo_blog_API.service;
 
-import br.edu.infnet.herick_bispo_blog_API.domain.model.Identificavel;
+import br.edu.infnet.herick_bispo_blog_API.domain.Identificavel;
+import br.edu.infnet.herick_bispo_blog_API.exception.IdentificadorDuplicadoException;
+import br.edu.infnet.herick_bispo_blog_API.exception.RecursoNaoEncontradoException;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Service
 public abstract class BaseService<T extends Identificavel> {
 
     private final Map<Long, T> dados = new LinkedHashMap<Long, T>();
@@ -13,7 +17,7 @@ public abstract class BaseService<T extends Identificavel> {
         validarObjeto(objeto);
 
         if(dados.containsKey(objeto.getId())){
-            throw new IllegalArgumentException("Já existe um objeto com este identificador");
+            throw new IdentificadorDuplicadoException("Já existe um objeto com este identificador");
         }
 
         dados.put(objeto.getId(), objeto);
@@ -65,7 +69,7 @@ public abstract class BaseService<T extends Identificavel> {
         }
 
         if(!dados.containsKey(id)){
-            throw new IllegalArgumentException("Nenhum recurso encontrado para esse identificador");
+            throw new RecursoNaoEncontradoException("Nenhum recurso encontrado para esse identificador");
         }
     }
 }

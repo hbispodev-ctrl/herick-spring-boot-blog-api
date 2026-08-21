@@ -1,4 +1,4 @@
-package br.edu.infnet.herick_bispo_blog_API.domain.model;
+package br.edu.infnet.herick_bispo_blog_API.domain;
 
 import java.time.LocalDateTime;
 

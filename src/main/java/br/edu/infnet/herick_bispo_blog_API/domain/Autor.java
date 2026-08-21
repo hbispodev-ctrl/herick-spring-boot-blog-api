@@ -1,4 +1,6 @@
-package br.edu.infnet.herick_bispo_blog_API.domain.model;
+package br.edu.infnet.herick_bispo_blog_API.domain;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ public class Autor extends Usuario{
     private int quantidadeAvaliacoesEmArtigos = 0;
     private double somaAvaliacoesEmArtigos = 0.0;
 
+    @JsonManagedReference
     private List<Artigo> artigos = new ArrayList<>();
 
     public Autor(){}
