@@ -1,11 +1,21 @@
 package br.edu.infnet.herick_bispo_blog_API.domain;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
+
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "usuarios")
 public abstract class Usuario implements Identificavel {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private String nome;
+    @Column(nullable = false, unique = true)
     private String email;
     private LocalDateTime dataCadastro;
 

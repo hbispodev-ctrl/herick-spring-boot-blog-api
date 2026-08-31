@@ -2,15 +2,30 @@ package br.edu.infnet.herick_bispo_blog_API.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "artigos")
 public class Artigo implements Identificavel{
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, length = 150)
+    @NotBlank(message = "O título deve ser informado.")
+    @Size(max = 150, message = "O título deve possuir no máximo 150 caracteres.")
     private String titulo;
+
+    @Column(nullable = false, length = 5000)
+    @NotBlank(message = "O conteúdo deve ser informado.")
+    @Size(max = 150, message = "O conteúdo deve possuir no máximo 5000 caracteres.")
     private String conteudo;
     private LocalDateTime dataPublicacao;
     private boolean publicado;
@@ -19,17 +34,24 @@ public class Artigo implements Identificavel{
     private int quantidadeAvaliacoesArtigo = 0;
     private double somaAvaliacoesArtigo = 0.0;
 
-    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "autor_id")
+    @JsonBackReference(value = "autor-artigo")
     private Autor autor;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "artigo_id")
     private List<Comentario> comentarios = new ArrayList<Comentario>();
 
-    public Artigo(){}
+    protected Artigo(){}
 
-    public Artigo(Long id, String titulo, String conteudo) {
-        this.id = id;
+    public Artigo(String titulo, String conteudo){
         this.titulo = titulo;
         this.conteudo = conteudo;
+    }
+    public Artigo(Long id, String titulo, String conteudo) {
+        this(titulo, conteudo);
+        this.id = id;
     }
 
 // ------------------------------------------------------------------------------------------------------------------------

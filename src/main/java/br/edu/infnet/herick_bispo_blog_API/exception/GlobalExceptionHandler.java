@@ -2,10 +2,12 @@ package br.edu.infnet.herick_bispo_blog_API.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -19,6 +21,19 @@ public class GlobalExceptionHandler {
                 LocalDateTime.now());
 
         return ResponseEntity.status(status).body(erro);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErroResponse> tratarErroValidacao(MethodArgumentNotValidException exception){
+
+        String mensagem = exception
+                .getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(erro -> erro.getField() + ": " + erro.getDefaultMessage())
+                .collect(Collectors.joining("; "));
+
+        return criarResposta(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
     @ExceptionHandler(RecursoNaoEncontradoException.class)

@@ -1,7 +1,11 @@
 package br.edu.infnet.herick_bispo_blog_API.controller;
 
 import br.edu.infnet.herick_bispo_blog_API.domain.Artigo;
+import br.edu.infnet.herick_bispo_blog_API.repository.ArtigoRepository;
 import br.edu.infnet.herick_bispo_blog_API.service.ArtigoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -14,11 +18,15 @@ import java.util.List;
 public class ArtigoControler {
 
     private final ArtigoService artigoService;
+    private final ArtigoRepository artigoRepository;
 
-    public ArtigoControler(ArtigoService artigoService) {
+    public ArtigoControler(ArtigoService artigoService, ArtigoRepository artigoRepository) {
         this.artigoService = artigoService;
+        this.artigoRepository = artigoRepository;
     }
 
+    @Operation(summary = "Lista com todos os artigos.",
+            description = "Retorna com todos os comunicados na aplicação")
     @GetMapping
     public ResponseEntity< List<Artigo>> obterLista(){
 
@@ -35,15 +43,22 @@ public class ArtigoControler {
         return ResponseEntity.ok(artigo);
     }
 
-    @GetMapping(params = "titulo")
-    public ResponseEntity<List<Artigo>>  obertPorTitulo(@RequestParam String titulo){
+    @GetMapping("/publicados")
+    public ResponseEntity<List<Artigo>>  obterPublicados(){
+
+        List<Artigo> comunicados = artigoService.obterPublicados();
+        return ResponseEntity.ok(comunicados);
+    }
+
+    @GetMapping("/busca")
+    public ResponseEntity<List<Artigo>>  obertPorTitulo(@Parameter(description = "Trecho do título do artigo") @RequestParam String titulo){
 
         List<Artigo> artigos = artigoService.obterPorTitulo(titulo);
         return ResponseEntity.ok(artigos);
     }
 
     @PostMapping
-    public ResponseEntity<Artigo> incluir(@RequestBody Artigo artigo){
+    public ResponseEntity<Artigo> incluir(@Valid @RequestBody Artigo artigo){
 
         artigoService.incluir(artigo);
 
@@ -53,11 +68,11 @@ public class ArtigoControler {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Artigo> alterar(@PathVariable Long id, @RequestBody Artigo artigo){
+    public ResponseEntity<Artigo> alterar(@PathVariable Long id, @Valid @RequestBody Artigo artigo){
 
         artigo.setId(id);
 
-        artigoService.alterar(artigo);
+        artigoService.alterar(id, artigo);
 
         return ResponseEntity.ok(artigo);
     }

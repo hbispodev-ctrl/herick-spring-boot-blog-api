@@ -1,7 +1,11 @@
 package br.edu.infnet.herick_bispo_blog_API.domain;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "leitores")
 public class Leitor extends Usuario {
 
     private boolean inscritoNewsletter;

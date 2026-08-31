@@ -4,6 +4,7 @@ import br.edu.infnet.herick_bispo_blog_API.domain.Artigo;
 import br.edu.infnet.herick_bispo_blog_API.domain.Comentario;
 import br.edu.infnet.herick_bispo_blog_API.service.ArtigoService;
 import br.edu.infnet.herick_bispo_blog_API.service.ComentarioService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -12,7 +13,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/artigos")
+@RequestMapping("/artigos/{idArtigo}/comentarios")
 public class ComentarioControler {
 
     private final ArtigoService artigoService;
@@ -23,17 +24,25 @@ public class ComentarioControler {
         this.comentarioService = comentarioService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping
     public ResponseEntity<List<Comentario>>  obterComentariosPorArtigo(@PathVariable Long idArtigo){
 
         List<Comentario> comentarios = comentarioService.obterComentariosPorArtigo(idArtigo);
         return ResponseEntity.ok(comentarios);
     }
 
-    @PostMapping
-    public ResponseEntity<Comentario> incluir(@RequestBody Comentario comentario){
+    @GetMapping("/moderacao")
+    public ResponseEntity<List<Comentario>>  obterNaoModerados(){
 
-        comentarioService.incluir(comentario);
+        List<Comentario> comentarios = comentarioService.obterNaoModerados();
+        return ResponseEntity.ok(comentarios);
+    }
+
+    @PostMapping
+    public ResponseEntity<Comentario> incluir(@PathVariable Long idArtigo, @Valid @RequestBody Comentario comentario){
+
+
+        comentarioService.incluir(idArtigo, comentario);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(comentario.getId()).toUri();
 
@@ -41,11 +50,21 @@ public class ComentarioControler {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Comentario> alterar(@PathVariable Long id, @RequestBody Comentario comentario){
+    public ResponseEntity<Comentario> alterarDoUsuario(@PathVariable Long id, @Valid @RequestBody Comentario comentario){
 
         comentario.setId(id);
 
-        comentarioService.alterar(comentario);
+        comentarioService.alterarDoUsuario(id, comentario);
+
+        return ResponseEntity.ok(comentario);
+    }
+
+    @PutMapping("/moderacao/{id}")
+    public ResponseEntity<Comentario> alterarDoModerador(@PathVariable Long id, @RequestBody Comentario comentario){
+
+        comentario.setId(id);
+
+        comentarioService.alterarDoModerador(id, comentario);
 
         return ResponseEntity.ok(comentario);
     }

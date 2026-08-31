@@ -1,18 +1,22 @@
 package br.edu.infnet.herick_bispo_blog_API.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "autores")
 public class Autor extends Usuario{
 
     private double reputacao = 5.0;
     private int quantidadeAvaliacoesEmArtigos = 0;
     private double somaAvaliacoesEmArtigos = 0.0;
 
-    @JsonManagedReference
+    @OneToMany(mappedBy = "autor")
+    @JsonManagedReference(value = "autor-artigo")
     private List<Artigo> artigos = new ArrayList<>();
 
     public Autor(){}
